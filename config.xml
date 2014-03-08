@@ -1,0 +1,28 @@
+<widget xmlns	= "http://www.w3.org/ns/widgets"
+	xmlns:gap	= "http://phonegap.com/ns/1.0"
+	id		    = "com.phonegap.hello-world"
+	version 	= "1.0.0">
+
+    <name>MS Cafe</name>
+    <description>
+    	A sample Apache Cordova application that responds to the deviceready event.
+    </description>
+    <author email="dineshc@outlook.com" href="http://phonegap.com">
+        Dinesh Chandnani
+    </author>
+
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="WebViewBounce" value="true" />
+
+    <!-- Core plugins -->
+    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.camera" />
+
+<!--
+    <gap:plugin name="org.apache.cordova.storage" />
+-->
+
+</widget>
+
