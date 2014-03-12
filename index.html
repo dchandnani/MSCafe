@@ -25,8 +25,14 @@
             }]
         };
     </script>
+
     <!-- dojo bootstrap -->
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/dojo/1.9.2/dojo/dojo.js"></script>
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true&amp;libraries=places"></script>
+ 	<script src="phonegap.js"></script>
+ 	<script src="js/index.js"></script>
+
     <!-- dojo application code -->
     <script>
         // Load the widget parser and mobile base
@@ -42,7 +48,12 @@
             "dojox/mobile/Pane",
 			"dojox/mobile/SwapView",
 			"dojox/mobile/PageIndicator",
-			"dojox/mobile/Rating"
+			"dojox/mobile/Rating",
+			"dojox/mobile/TabBar",
+			"dojox/mobile/TabBarButton",
+			"dojox/mobile/CheckBox",
+			"dojox/mobile/Button" ,
+			"dojox/mobile/bookmarkable"
         ], function (parser) {
             // Parse the page for widgets
             parser.parse();
@@ -61,20 +72,20 @@
 	</div>
 	<div id="homeList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
 	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'popular', transition:'slide'">
-			 Popular
+	         data-dojo-props="moveTo:'#popular', transition:'slide'">
+			 Today's Picks
 	    </div>
 	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'menu', transition:'slide'">
+	         data-dojo-props="moveTo:'#menu', transition:'slide'">
 			 Menu
 	    </div>
 	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'details', transition:'slide'">
+	         data-dojo-props="moveTo:'#details', transition:'slide'">
 			 Meal Card
 	    </div>
 	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'details', transition:'slide'">
-			 Search
+	         data-dojo-props="moveTo:'#order', transition:'slide'">
+			 Order Status
 	    </div>
 	</div>
 </div>
@@ -83,8 +94,8 @@
 <div id="popular" data-dojo-type="dojox/mobile/ScrollableView">
 	<div id="popularHeading"
 	     data-dojo-type="dojox/mobile/Heading"
-	     data-dojo-props="fixed: 'top'" style="height:200px;">
-		 		<img src="images/logo.png" alt="" style="height:90%" />
+	     data-dojo-props="fixed: 'top', back:'Home', moveTo:'home'" style="height:100px;">
+		 		<img src="images/logo.png" alt="" style="height:90%;margin-left:-62px" />
 	</div>
 	<div data-dojo-type="dojox/mobile/SwapView" style="background:black">
 		<img src="images/pizza.jpg" style="height:100%;display:block;margin-left:auto;margin-right:auto" alt="" />
@@ -117,29 +128,120 @@
 <div id="menu" data-dojo-type="dojox/mobile/ScrollableView">
 	<div id="menuHeading"
 	     data-dojo-type="dojox/mobile/Heading"
-	     data-dojo-props="fixed: 'top', label: 'Feeds'" style="height:100px;">
-		 		<img src="images/logo.png" alt="" style="height:90%;" />
+	     data-dojo-props="fixed: 'top', back: 'Home', moveTo:'home'" style="height:100px;">
+		 		<img src="images/logo.png" alt="" style="height:90%;margin-left:-62px" />
 	</div>
 	<div id="menuList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
-	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'popular', transition:'slide'">
-			 Popular
+	    <div data-dojo-type="dojox/mobile/ListItem" style="height:85px;line-height: 20px;">
+			 <img src="images/chinese.jpg" alt="" style="width:80px;height:80px;float:left;"/>
+			 <div style="float:right;margin-top:30px;">
+				 <input data-dojo-type="dojox/mobile/CheckBox" type="checkbox" style="" value="off" onchange="foodSelectionChanged({'checked': this.checked, 'name': 'Cashew Chicken'})"/>
+			 </div>
+			 <div style="padding-left: 85px;vertical-align:middle;margin-top:20px">
+				 <div style="font-size:0.9em;margin-left:20px;margin-bottom:5px">Cashew Chicken</div>
+				 <div style="font-size:0.7em;margin-left:20px">$7.00</div>
+			 </div>
 	    </div>
-	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'menu', transition:'slide'">
-			 Menu
+	    <div data-dojo-type="dojox/mobile/ListItem" style="height:85px;line-height: 20px;">
+			 <img src="images/sushi.jpg" alt="" style="width:80px;height:80px;float:left;"/>
+			 <div style="float:right;margin-top:30px;">
+				 <input data-dojo-type="dojox/mobile/CheckBox" type="checkbox" style="" value="off" onchange="foodSelectionChanged({'checked': this.checked, 'name': 'Sushi'})"/>
+			 </div>
+			 <div style="padding-left: 85px;vertical-align:middle;margin-top:20px">
+				 <div style="font-size:0.9em;margin-left:20px;margin-bottom:5px">Sushi</div>
+				 <div style="font-size:0.7em;margin-left:20px">$8.00</div>
+			 </div>
 	    </div>
-	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'details', transition:'slide'">
-			 Meal Card
+	    <div data-dojo-type="dojox/mobile/ListItem" style="height:85px;line-height: 20px;">
+			 <img src="images/steak.jpg" alt="" style="width:80px;height:80px;float:left;"/>
+			 <div style="float:right;margin-top:30px;">
+				 <input data-dojo-type="dojox/mobile/CheckBox" type="checkbox" style="" value="off" onchange="foodSelectionChanged({'checked': this.checked, 'name': 'Steak'})"/>
+			 </div>
+			 <div style="padding-left: 85px;vertical-align:middle;margin-top:20px">
+				 <div style="font-size:0.9em;margin-left:20px;margin-bottom:5px">Steak</div>
+				 <div style="font-size:0.7em;margin-left:20px">$9.00</div>
+			 </div>
 	    </div>
-	    <div data-dojo-type="dojox/mobile/ListItem"
-	         data-dojo-props="moveTo:'details', transition:'slide'">
-			 Search
+	    <div data-dojo-type="dojox/mobile/ListItem" style="height:85px;line-height: 20px;">
+			 <img src="images/pizza.jpg" alt="" style="width:80px;height:80px;float:left;"/>
+			 <div style="float:right;margin-top:30px;">
+				 <input data-dojo-type="dojox/mobile/CheckBox" type="checkbox" style="" value="off" onchange="foodSelectionChanged({'checked': this.checked, 'name': 'Pizza'})"/>
+			 </div>
+			 <div style="padding-left: 85px;vertical-align:middle;margin-top:20px">
+				 <div style="font-size:0.9em;margin-left:20px;margin-bottom:5px">Pizza</div>
+				 <div style="font-size:0.7em;margin-left:20px">$5.00</div>
+			 </div>
 	    </div>
+	    <div data-dojo-type="dojox/mobile/ListItem" style="height:85px;line-height: 20px;">
+			 <img src="images/fruits.jpg" alt="" style="width:80px;height:80px;float:left;"/>
+			 <div style="float:right;margin-top:30px;">
+				 <input data-dojo-type="dojox/mobile/CheckBox" type="checkbox" style="" value="off" onchange="foodSelectionChanged({'checked': this.checked, 'name': 'Fruits'})"/>
+			 </div>
+			 <div style="padding-left: 85px;vertical-align:middle;margin-top:20px">
+				 <div style="font-size:0.9em;margin-left:20px;margin-bottom:5px">Fruits</div>
+				 <div style="font-size:0.7em;margin-left:20px">$6.00</div>
+			 </div>
+	    </div>
+	    <div data-dojo-type="dojox/mobile/ListItem" style="height:85px;line-height: 20px;">
+			 <img src="images/thai.jpg" alt="" style="width:80px;height:80px;float:left;"/>
+			 <div style="float:right;margin-top:30px;">
+				 <input data-dojo-type="dojox/mobile/CheckBox" type="checkbox" style="" value="off" onchange="foodSelectionChanged({'checked': this.checked, 'name': 'Thai Curry'})"/>
+			 </div>
+			 <div style="padding-left: 85px;vertical-align:middle;margin-top:20px">
+				 <div style="font-size:0.9em;margin-left:20px;margin-bottom:5px">Thai Curry</div>
+				 <div style="font-size:0.7em;margin-left:20px">$8.00</div>
+			 </div>
+	    </div>
+	</div>
+	<div data-dojo-type="dojox/mobile/Heading" single="true" fixed="bottom" style="padding-top:1px">
+		<span>
+			<label class="select" for="category">Cafe</label>
+			<select name="category" id="category">
+				<option>4</option>
+			    <option>16</option>
+			    <option>25</option>
+			    <option>41</option>
+			    <option>50</option>
+			    <option>111</option>
+			</select>
+		</span>
+		<span>
+			<label id="orderTotalTb" style="margin-left:5px">$0.00</label>
+		</span>
+		<span>
+ 			<button id="checkOutBtn" data-dojo-type="dojox/mobile/ToolBarButton" data-dojo-props="moveTo:'order', transition:'slide'" style="float:right" onclick="showOrder();">Order</button>
+		</span>
 	</div>
 </div>
 
+<!-- Order view -->
+<div id="order" data-dojo-type="dojox/mobile/ScrollableView">
+	<div id="orderHeading"
+	     data-dojo-type="dojox/mobile/Heading"
+	     data-dojo-props="fixed: 'top', back: 'Menu', moveTo:'menu'" style="height:100px;">
+		 		<img src="images/logo.png" alt="" style="height:90%;margin-left:-62px" />
+	</div>
+	<div id="orderList" data-dojo-type="dojox/mobile/EdgeToEdgeList">
+	</div>
+	<div id="statusTb" style="font-size:13px;margin:5px">Your order is being prepared...</div>
+	<ul data-dojo-type="dojox/mobile/TabBar" data-dojo-props='barType:"tabBar"' single="true" fixed="bottom" style="width:100%;">
+	    <li data-dojo-type="dojox/mobile/TabBarButton" style="height:70px;font-size:0.9em"><span style="font-size: 12pt"><a href="tel:+14252602134" style="color:white;">Call for Shuttle</a></span></li>
+	    <li data-dojo-type="dojox/mobile/TabBarButton" data-dojo-props="moveTo:'map', transition:'slide'" style="height:70px;font-size:0.9em" onclick="showDirections();"><span style="font-size: 12pt">Directions</span></li>
+	</ul>
+</div>
+
+
+<!-- Map view -->
+<div id="map" data-dojo-type="dojox/mobile/ScrollableView">
+	<div id="mapHeading"
+	     data-dojo-type="dojox/mobile/Heading"
+	     data-dojo-props="fixed: 'top', back: 'Home', moveTo:'home'" style="height:100px;">
+		 		<img src="images/logo.png" alt="" style="height:90%;margin-left:-62px" />
+	</div>
+	<div id="geolocation" style="width:100%;height:400px">
+
+	</div>
+</div>
 
 </body>
 </html>
